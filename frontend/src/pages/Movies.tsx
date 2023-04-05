@@ -1,24 +1,18 @@
-import { useState } from "react";
-import data from "../MovieData.json";
-
-const movieArray = data.MovieData;
+import { useEffect, useState } from "react";
+import { Movie } from "../types/movie";
 
 function MovieList() {
-  const [listOMovies, setListOMovies] = useState(movieArray);
+  const [listOMovies, setListOMovies] = useState<Movie[]>([]);
 
-  const addMovie = () => {
-    setListOMovies([
-      ...movieArray,
-      {
-        Category: "Action/Adventure",
-        Title: "Batman Begins",
-        Year: 2005,
-        Director: "Christopher Nolan",
-        Rating: "PG-13",
-        Edited: "No",
-      },
-    ]);
-  };
+  useEffect(() => {
+    const fetchMovie = async () => {
+      const rsp = await fetch("https://localhost:4000/movie");
+      const temp = await rsp.json();
+      setListOMovies(temp);
+    };
+
+    fetchMovie();
+  }, []);
 
   return (
     <>
@@ -35,28 +29,27 @@ function MovieList() {
               <th>Director</th>
               <th>Rating</th>
               <th>Category</th>
+              <th>Edited</th>
+              <th>Lent To</th>
+              <th>Notes</th>
             </tr>
           </thead>
           <tbody>
             {listOMovies.map((m) => (
-              <tr>
-                <td>{m.Title}</td>
-                <td>{m.Year}</td>
-                <td>{m.Director}</td>
-                <td>{m.Rating}</td>
-                <td>{m.Category}</td>
+              <tr key={m.movieId}>
+                <td>{m.title}</td>
+                <td>{m.year}</td>
+                <td>{m.director}</td>
+                <td>{m.rating}</td>
+                <td>{m.category}</td>
+                <td>{m.edited}</td>
+                <td>{m.lentTo}</td>
+                <td>{m.notes}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-
-      <button
-        className="btn btn-primary"
-        onClick={addMovie}
-      >
-        Add Movie
-      </button>
     </>
   );
 }

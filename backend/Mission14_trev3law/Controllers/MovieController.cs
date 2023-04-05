@@ -15,7 +15,10 @@ namespace Mission14_trev3law.Controllers
         }
         public IEnumerable<Movie> Get()
         {
-            var x = context.Movies.ToArray();
+            var x = context.Movies
+                .Where(x=>x.Edited == "Yes")
+                .OrderBy(x=>x.Title)
+                .ToArray();
             return (x);
         }
     }
