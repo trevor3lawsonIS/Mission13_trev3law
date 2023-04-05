@@ -4,7 +4,7 @@ using Mission14_trev3law.Data;
 
 namespace Mission14_trev3law.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class MovieController : Controller
     {
